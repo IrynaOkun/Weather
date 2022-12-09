@@ -2,9 +2,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
+
+import static java.time.Duration.*;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class IrynaOkunTest {
@@ -524,6 +529,37 @@ public class IrynaOkunTest {
         assertEquals(actualResult, expectedResult);
         
         driver.quit();
+
+    }
+
+    String url2 = "https://bt.rozetka.com.ua/ua/keramika/c117101/";
+    public final static By KERAMIKA = By.xpath("//div/h1");
+
+    @Test
+    public void testGetText() {
+        System.setProperty("webdriver.chrome.driver", "/Applications/soft/chromedriver");
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get(url2);
+        String keramikaHeader = driver.findElement(KERAMIKA).getText();
+        String expectedResult = "Кераміка";
+        Assert.assertEquals(keramikaHeader, expectedResult);
+    }
+
+    @Test
+    public void testWaitUntil() {
+        System.setProperty("webdriver.chrome.driver", "/Applications/soft/chromedriver");
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.get(url2);
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("img[alt='Rozetka Logo']"))).click();
+        String actualResult = driver.getCurrentUrl();
+        String expectedResult = "https://rozetka.com.ua/ua/";
+        Assert.assertEquals(actualResult, expectedResult);
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//        By elem_dynamic = By.id("dynamic-element");
+//        wait.until(ExpectedConditions.presenceOfElementLocated(elem_dynamic));
 
     }
 
